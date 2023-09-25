@@ -49,11 +49,19 @@ h2 {
 }
 
 .progress-activity {
-    background-color: #3498db; /* Change the color to indicate progress */
+    background-color: #3498db;
 }
 
 .progress-money {
-    background-color: #57ea6a; /* Change the color to indicate progress */
+    background-color: #57ea6a; 
+}
+
+.progress-money-blown {
+    background-color: #db3434
+}
+
+.progress-money-concern {
+    background-color: #ebf35b;
 
 }
 

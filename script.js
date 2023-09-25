@@ -34,7 +34,8 @@ function createPhase(phaseName, estimatedQuantity, claimedQuantity, budgets, bud
     h2.textContent = phaseName;
 
     // Create Activity Progress Bar
-    const activityProgressBar = createProgressBar((claimedQuantity / estimatedQuantity) * 100);
+    const activityProgress = (claimedQuantity / estimatedQuantity) * 100
+    const activityProgressBar = createProgressBar(activityProgress);
     activityProgressBar.getElementsByClassName("progress").item(0).classList.add("progress-activity")
 
     // Create Cost Progress Bar
@@ -44,10 +45,21 @@ function createPhase(phaseName, estimatedQuantity, claimedQuantity, budgets, bud
         totalBudget += budgets[budgetType].total;
         currentCost += budgets[budgetType].current;
     }
-    const activityCostBar = createProgressBar((currentCost / totalBudget) * 100);
-    activityCostBar.getElementsByClassName("progress").item(0).classList.add("progress-money")
 
-    const budgetDropdown = createBudgetDropdown(budgets);
+    const activityCostBar = createProgressBar((currentCost / totalBudget) * 100);
+    // activityCostBar.getElementsByClassName("progress").item(0).classList.add("progress-money")
+
+    // TODO: Call color Logic function
+    const progressDiv = activityCostBar.getElementsByClassName("progress").item(0)
+    console.log("LOGGING");
+    console.log(currentCost);
+    console.log(totalBudget);
+    console.log(activityProgress);
+    console.log("DONE LOGING")
+    moneyProgressBarColorLogic(progressDiv, currentCost, totalBudget, activityProgress)
+
+
+    const budgetDropdown = createBudgetDropdown(budgets, activityProgress);
 
     phaseDiv.appendChild(h2);
     phaseDiv.appendChild(activityProgressBar);
@@ -70,7 +82,7 @@ function createProgressBar(progressPercentage) {
     return progressBarDiv;
 }
 
-function createBudgetDropdown(budgets) {
+function createBudgetDropdown(budgets, activityProgress) {
     const dropdownDiv = document.createElement("div");
     dropdownDiv.className = "budget-dropdown";
 
@@ -80,7 +92,7 @@ function createBudgetDropdown(budgets) {
         if (budgets.hasOwnProperty(budgetName)) {
             const budget = budgets[budgetName];
             budgetBars.push(createBudgetLabel(budgetName));
-            budgetBars.push(createBudgetProgressBar(budgetName, budget.total, budget.current));
+            budgetBars.push(createBudgetProgressBar(budgetName, budget.total, budget.current, activityProgress));
         }
     }
 
@@ -114,13 +126,15 @@ function createBudgetLabel(budgetName) {
 
 }
 
-function createBudgetProgressBar(budgetName, totalBudget, currentCost) {
+function createBudgetProgressBar(budgetName, totalBudget, currentCost, activityProgress) {
     const progressBarDiv = document.createElement("div");
     progressBarDiv.className = "optional-progress-bar";
 
     const progressDiv = document.createElement("div");
     progressDiv.className = "progress";
-    progressDiv.classList.add("progress-money");
+
+    // TODO: Call color Logic function
+    moneyProgressBarColorLogic(progressDiv, currentCost, totalBudget, activityProgress)
 
     if (totalBudget > 0) {
         const progressPercentage = (currentCost / totalBudget) * 100;
@@ -132,4 +146,16 @@ function createBudgetProgressBar(budgetName, totalBudget, currentCost) {
     progressBarDiv.appendChild(progressDiv);
 
     return progressBarDiv;
+}
+
+function moneyProgressBarColorLogic(progressBar, currentCost, totalBudget, activityProgress) {
+    if (currentCost > totalBudget) {
+        progressBar.classList.add("progress-money-blown");
+    } else if ( (currentCost == totalBudget) && (activityProgress < 100) ) {
+        progressBar.classList.add("progress-money-blown");
+    } else if ((currentCost/totalBudget)*100 > activityProgress) {
+        progressBar.classList.add("progress-money-concern");
+    } else {
+        progressBar.classList.add("progress-money");
+    }
 }
