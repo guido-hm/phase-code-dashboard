@@ -34,9 +34,10 @@ function createPhase(phaseName, estimatedQuantity, claimedQuantity, budgets, bud
     h2.textContent = phaseName;
 
     // Create Activity Progress Bar
-    const activityProgress = (claimedQuantity / estimatedQuantity) * 100
+    const activityProgress = ((claimedQuantity / estimatedQuantity) * 100).toFixed(2)
     const activityProgressBar = createProgressBar(activityProgress);
-    activityProgressBar.getElementsByClassName("progress").item(0).classList.add("progress-activity")
+    activityProgressBar.getElementsByClassName("progress").item(0).classList.add("progress-activity");
+
 
     // Create Cost Progress Bar
     var totalBudget = 0;
@@ -46,7 +47,7 @@ function createPhase(phaseName, estimatedQuantity, claimedQuantity, budgets, bud
         currentCost += budgets[budgetType].current;
     }
 
-    const activityCostBar = createProgressBar((currentCost / totalBudget) * 100);
+    const activityCostBar = createProgressBar(((currentCost / totalBudget) * 100).toFixed(2));
     // activityCostBar.getElementsByClassName("progress").item(0).classList.add("progress-money")
 
     // TODO: Call color Logic function
@@ -76,6 +77,11 @@ function createProgressBar(progressPercentage) {
     const progressDiv = document.createElement("div");
     progressDiv.className = "progress";
     progressDiv.style.width = `${Math.min(100, progressPercentage)}%`;
+
+    const percentDiv = document.createElement("div");
+    percentDiv.className = "percent";
+    percentDiv.textContent = progressPercentage;
+    progressBarDiv.appendChild(percentDiv);
 
     progressBarDiv.appendChild(progressDiv);
 
@@ -136,12 +142,18 @@ function createBudgetProgressBar(budgetName, totalBudget, currentCost, activityP
     // TODO: Call color Logic function
     moneyProgressBarColorLogic(progressDiv, currentCost, totalBudget, activityProgress)
 
+    var progressPercentage = "N/A";
     if (totalBudget > 0) {
-        const progressPercentage = (currentCost / totalBudget) * 100;
+        progressPercentage = ((currentCost / totalBudget) * 100).toFixed(2);
         progressDiv.style.width = `${Math.min(100, progressPercentage)}%`;
     } else {
         progressDiv.style.width = "0";
     }
+
+    const percentDiv = document.createElement("div");
+    percentDiv.className = "percent";
+    percentDiv.textContent = progressPercentage;
+    progressBarDiv.appendChild(percentDiv);
 
     progressBarDiv.appendChild(progressDiv);
 
