@@ -44,9 +44,17 @@ h2 {
 
 .progress {
     height: 100%;
-    background-color: #3498db; /* Change the color to indicate progress */
     border-radius: 10px;
     text-align: left;
+}
+
+.progress-activity {
+    background-color: #3498db; /* Change the color to indicate progress */
+}
+
+.progress-money {
+    background-color: #57ea6a; /* Change the color to indicate progress */
+
 }
 
 .optional-progress-bar {

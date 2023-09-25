@@ -35,19 +35,17 @@ function createPhase(phaseName, estimatedQuantity, claimedQuantity, budgets, bud
 
     // Create Activity Progress Bar
     const activityProgressBar = createProgressBar((claimedQuantity / estimatedQuantity) * 100);
+    activityProgressBar.getElementsByClassName("progress").item(0).classList.add("progress-activity")
 
     // Create Cost Progress Bar
     var totalBudget = 0;
     var currentCost = 0;
-
-    console.log(typeof budgets);
-
     for (const budgetType of budgetTypes) {
         totalBudget += budgets[budgetType].total;
         currentCost += budgets[budgetType].current;
     }
-
     const activityCostBar = createProgressBar((currentCost / totalBudget) * 100);
+    activityCostBar.getElementsByClassName("progress").item(0).classList.add("progress-money")
 
     const budgetDropdown = createBudgetDropdown(budgets);
 
@@ -120,14 +118,9 @@ function createBudgetProgressBar(budgetName, totalBudget, currentCost) {
     const progressBarDiv = document.createElement("div");
     progressBarDiv.className = "optional-progress-bar";
 
-    const progressBarLabel = document.createElement("div");
-
-    // progressBarLabel.textContent = budgetName;
-    // progressBarLabel.className = "bar-label"
-
     const progressDiv = document.createElement("div");
     progressDiv.className = "progress";
-    // progressDiv.textContent = budgetName
+    progressDiv.classList.add("progress-money");
 
     if (totalBudget > 0) {
         const progressPercentage = (currentCost / totalBudget) * 100;
