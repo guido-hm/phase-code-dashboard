@@ -80,7 +80,7 @@ function createProgressBar(progressPercentage) {
 
     const percentDiv = document.createElement("div");
     percentDiv.className = "percent";
-    percentDiv.textContent = progressPercentage;
+    percentDiv.textContent = progressPercentage+"%";
     progressBarDiv.appendChild(percentDiv);
 
     progressBarDiv.appendChild(progressDiv);
@@ -142,17 +142,18 @@ function createBudgetProgressBar(budgetName, totalBudget, currentCost, activityP
     // TODO: Call color Logic function
     moneyProgressBarColorLogic(progressDiv, currentCost, totalBudget, activityProgress)
 
-    var progressPercentage = "N/A";
+    var progressPercentageString = "N/A";
     if (totalBudget > 0) {
-        progressPercentage = ((currentCost / totalBudget) * 100).toFixed(2);
+        const progressPercentage = ((currentCost / totalBudget) * 100).toFixed(2);
         progressDiv.style.width = `${Math.min(100, progressPercentage)}%`;
+        progressPercentageString = String(progressPercentage)+"%"
     } else {
         progressDiv.style.width = "0";
     }
 
     const percentDiv = document.createElement("div");
     percentDiv.className = "percent";
-    percentDiv.textContent = progressPercentage;
+    percentDiv.textContent = progressPercentageString;
     progressBarDiv.appendChild(percentDiv);
 
     progressBarDiv.appendChild(progressDiv);
