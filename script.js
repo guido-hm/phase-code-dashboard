@@ -20,25 +20,40 @@ addButton.addEventListener("click", () => {
             }
         }
 
-        createPhase(phaseName, estimatedQuantity, claimedQuantity, budgets);
+        createPhase(phaseName, estimatedQuantity, claimedQuantity, budgets, budgetTypes);
     } else {
         alert("Invalid input. Please enter valid numbers for estimated and claimed quantities.");
     }
 });
 
-function createPhase(phaseName, estimatedQuantity, claimedQuantity, budgets) {
+function createPhase(phaseName, estimatedQuantity, claimedQuantity, budgets, budgetTypes) {
     const phaseDiv = document.createElement("div");
     phaseDiv.className = "phase";
 
     const h2 = document.createElement("h2");
     h2.textContent = phaseName;
 
+    // Create Activity Progress Bar
     const activityProgressBar = createProgressBar((claimedQuantity / estimatedQuantity) * 100);
+
+    // Create Cost Progress Bar
+    var totalBudget = 0;
+    var currentCost = 0;
+
+    console.log(typeof budgets);
+
+    for (const budgetType of budgetTypes) {
+        totalBudget += budgets[budgetType].total;
+        currentCost += budgets[budgetType].current;
+    }
+
+    const activityCostBar = createProgressBar((currentCost / totalBudget) * 100);
 
     const budgetDropdown = createBudgetDropdown(budgets);
 
     phaseDiv.appendChild(h2);
     phaseDiv.appendChild(activityProgressBar);
+    phaseDiv.appendChild(activityCostBar);
     phaseDiv.appendChild(budgetDropdown);
 
     phasesContainer.appendChild(phaseDiv);
