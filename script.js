@@ -36,6 +36,7 @@ function createPhase(phaseName, estimatedQuantity, claimedQuantity, budgets, bud
     // Create Activity Progress Bar
     const activityProgress = ((claimedQuantity / estimatedQuantity) * 100).toFixed(2)
     const activityProgressBar = createProgressBar(activityProgress);
+    // Color Acitivty Progress Bar
     activityProgressBar.getElementsByClassName("progress").item(0).classList.add("progress-activity");
 
 
@@ -46,19 +47,11 @@ function createPhase(phaseName, estimatedQuantity, claimedQuantity, budgets, bud
         totalBudget += budgets[budgetType].total;
         currentCost += budgets[budgetType].current;
     }
-
-    const activityCostBar = createProgressBar(((currentCost / totalBudget) * 100).toFixed(2));
-    // activityCostBar.getElementsByClassName("progress").item(0).classList.add("progress-money")
-
-    // TODO: Call color Logic function
+    const activityCost = ((currentCost / totalBudget) * 100).toFixed(2)
+    const activityCostBar = createProgressBar(activityCost);
+    // Color Cost Progress Bar
     const progressDiv = activityCostBar.getElementsByClassName("progress").item(0)
-    console.log("LOGGING");
-    console.log(currentCost);
-    console.log(totalBudget);
-    console.log(activityProgress);
-    console.log("DONE LOGING")
     moneyProgressBarColorLogic(progressDiv, currentCost, totalBudget, activityProgress)
-
 
     const budgetDropdown = createBudgetDropdown(budgets, activityProgress);
 
@@ -139,14 +132,14 @@ function createBudgetProgressBar(budgetName, totalBudget, currentCost, activityP
     const progressDiv = document.createElement("div");
     progressDiv.className = "progress";
 
-    // TODO: Call color Logic function
+    // Call color Logic function
     moneyProgressBarColorLogic(progressDiv, currentCost, totalBudget, activityProgress)
 
-    var progressPercentageString = "N/A";
+    var progressPercentageString = "N/A";   
     if (totalBudget > 0) {
+        progressPercentageString = String( ((currentCost / totalBudget) * 100).toFixed(2))+"%";
         const progressPercentage = ((currentCost / totalBudget) * 100).toFixed(2);
         progressDiv.style.width = `${Math.min(100, progressPercentage)}%`;
-        progressPercentageString = String(progressPercentage)+"%"
     } else {
         progressDiv.style.width = "0";
     }
@@ -172,3 +165,8 @@ function moneyProgressBarColorLogic(progressBar, currentCost, totalBudget, activ
         progressBar.classList.add("progress-money");
     }
 }
+
+
+// TODO: Find a name to diffirintiate progress bar and actual progress. (the static bar and the dynamic one which grows on top of the static with color, depending on percent complete)
+// Sometimes progress bar refers to static and proress refers to dynamic, but in some parts or function names, progress bar refers to the dynamic one which makes things confusing.
+// Example of solution. Progress Bar Holder/Container and Progress Bar.
