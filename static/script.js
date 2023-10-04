@@ -1,29 +1,60 @@
 const addButton = document.getElementById("addButton");
 const phasesContainer = document.getElementById("phasesContainer");
 
+
 addButton.addEventListener("click", () => {
-    const phaseName = prompt("Enter phase name:");
-    const estimatedQuantity = parseFloat(prompt("Enter estimated quantity:"));
-    const claimedQuantity = parseFloat(prompt("Enter claimed quantity:"));
 
-    if (!isNaN(estimatedQuantity) && !isNaN(claimedQuantity)) {
-        const budgets = {};
-        // budgets.activity = { total: estimatedQuantity, current: claimedQuantity };
-        
-        const budgetTypes = ["labor", "equipment", "material", "subcontractor"];
-        for (const budgetType of budgetTypes) {
-            const totalBudget = parseFloat(prompt(`Enter total budget for ${budgetType} (optional):`));
-            const currentCost = parseFloat(prompt(`Enter current cost for ${budgetType} (optional):`));
-            
-            if (!isNaN(totalBudget) && !isNaN(currentCost)) {
-                budgets[budgetType] = { total: totalBudget, current: currentCost };
+    // // Trigger the file input click event
+    // document.getElementById("fileInput").click();
+    // console.log("SELECTED")
+
+    // Call Backend to Get Data. This will return an object. Each object will represent a different phase code and contain all the different pieces of data needed for each phase code
+    fetch('api/data')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('HTTP error. Status:');
             }
-        }
+            return response.json();
+        })
+        .then(data => {
+            // Iterate through data
+            // In each iteration, get all the info needed to call createPhase
+            // Call createPhase
+            console.log(data);
+            console.log("TEST")
+            for (const key in data) {
+                console.log(`${key}: ${data[key]}`);
+                var phaseName = key
+                var estimatedQuantity = data[key][0]
+                var claimedQuantity = data[key][1]
+        
+                var budgetTypes = data[key][2]
+        
+                const budgets = {};
+                
+                for (const budgetType in budgetTypes) {
+                    const totalBudget = data[key][3][budgetType];
+                    const currentCost = data[key][4][budgetType];
+                    
+                    budgets[budgetTypes[budgetType]] = { total: totalBudget, current: currentCost };
+                }
+        
+                createPhase(phaseName, estimatedQuantity, claimedQuantity, budgets, budgetTypes);
+        
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        })
+    
+    // Will iteravely do the rest of this code. Get rid of prompts and turn into variables that read the response
+    // const phaseName = prompt("Enter phase name:");
+    // const estimatedQuantity = parseFloat(prompt("Enter estimated quantity:"));
+    // const claimedQuantity = parseFloat(prompt("Enter claimed quantity:"));
 
-        createPhase(phaseName, estimatedQuantity, claimedQuantity, budgets, budgetTypes);
-    } else {
-        alert("Invalid input. Please enter valid numbers for estimated and claimed quantities.");
-    }
+
+    
+
 });
 
 function createPhase(phaseName, estimatedQuantity, claimedQuantity, budgets, budgetTypes) {
@@ -167,6 +198,12 @@ function moneyProgressBarColorLogic(progressBar, currentCost, totalBudget, activ
 }
 
 
+
+
+
 // TODO: Find a name to diffirintiate progress bar and actual progress. (the static bar and the dynamic one which grows on top of the static with color, depending on percent complete)
 // Sometimes progress bar refers to static and proress refers to dynamic, but in some parts or function names, progress bar refers to the dynamic one which makes things confusing.
 // Example of solution. Progress Bar Holder/Container and Progress Bar.
+
+
+// TODO: Fix Bugs. When budget is 0/0, infinity is shown as answer
