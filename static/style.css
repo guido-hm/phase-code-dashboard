@@ -121,3 +121,28 @@ h2 {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.button {
+    font-size: 48px;
+    width: 20%;
+    text-align: center;
+    padding: 20px 40px;
+    margin: 50px;
+    border: none;
+    cursor: pointer;
+    background-color: #3498db;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none
+}
+
+.button:hover {
+    background-color: #2980b9;
+}

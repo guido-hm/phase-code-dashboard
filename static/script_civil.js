@@ -2,14 +2,14 @@ const addButton = document.getElementById("addButton");
 const phasesContainer = document.getElementById("phasesContainer");
 
 
-addButton.addEventListener("click", () => {
+document.addEventListener("DOMContentLoaded", function() {
+    // Your code here will run once the DOM content is ready.
+    callBackend();
+});
 
-    // // Trigger the file input click event
-    // document.getElementById("fileInput").click();
-    // console.log("SELECTED")
-
+function callBackend() {
     // Call Backend to Get Data. This will return an object. Each object will represent a different phase code and contain all the different pieces of data needed for each phase code
-    fetch('api/data')
+    fetch('api/data-civil')
         .then(response => {
             if (!response.ok) {
                 throw new Error('HTTP error. Status:');
@@ -47,7 +47,7 @@ addButton.addEventListener("click", () => {
             console.error('Fetch error:', error);
         })    
 
-});
+}
 
 function createPhase(phaseName, estimatedQuantity, claimedQuantity, budgets, budgetTypes) {
     const phaseDiv = document.createElement("div");

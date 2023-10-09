@@ -3,18 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <title>Button Page</title>
 </head>
 <body>
-    <div class="dashboard">
-        <div class="add-phase">
-            <!-- <input type="file" id="fileInput" style="display: none;"> -->
-            <button id="addButton">Generate</button>
-        </div>
-        <p id="selectedFile"></p>
-        <div id="phasesContainer"></div>
+    <div class="button-container">
+        <a href="{{ url_for('civil') }}" class="button">Civil</a>
+        <a href="/mechanical" class="button">Mechanical</a>
+        <a href="/electrical" class="button">Electrical</a>
     </div>
-    <script src="/static/script.js"></script>
 </body>
 </html>
